@@ -13,6 +13,10 @@ def scopus():
 
 #get web of science data
 def web_of_science(name_of_school):
+    infos = {}
+    data = []
+    #auteurs = []
+    #keywords = []
     #it needs a geckodriver 'installed from github'
     driver = webdriver.Firefox(executable_path="/home/x-raiden/Downloads/geckodriver")
     driver.get("https://eressources.imist.ma/login?url=https://www.webofknowledge.com")
@@ -25,7 +29,7 @@ def web_of_science(name_of_school):
     button = driver.find_element_by_xpath("/html/body/div[1]/form/input")
     button.submit()
     #we should to wait for the page ( slow internet :'( )
-    time.sleep(30)
+    time.sleep(60)
     #entred to web_of_science
     main_selector = driver.find_element_by_xpath('//*[@id="select2-select1-container"]').click()
     search = driver.find_element_by_xpath('/html/body/span[37]/span/span[1]/input')
@@ -35,6 +39,27 @@ def web_of_science(name_of_school):
     search_bar.send_keys(name_of_school)
     button_in_web_of_science = driver.find_element_by_xpath("/html/body/form[1]/div[1]/div/div/div/table/tbody/tr/td[3]/span/span[1]/button")
     button_in_web_of_science.submit()
+    #articles page
+    time.sleep(30)
+    driver.find_element_by_xpath('/html/body/div[1]/div[26]/div[2]/div/div/div/div[2]/div[3]/div[5]/form[2]/div/div[1]/div/span/div[2]/div[1]/div[3]/div/div[1]/div/a/value').click()
+    time.sleep(15)
+    for k in range (1,100):
+        try:
+            infos['titre'] = driver.find_element_by_xpath('/html/body/div[1]/div[26]/form[3]/div/div/div/div[1]/div/div[1]/value').text
+            infos['date_publication'] = driver.find_element_by_xpath('/html/body/div[1]/div[26]/form[3]/div/div/div/div[1]/div/div[3]/p[4]/value').text
+            infos['type'] = driver.find_element_by_xpath('/html/body/div[1]/div[26]/form[3]/div/div/div/div[1]/div/div[3]/p[5]').text
+            infos['auteurs'] = driver.find_element_by_xpath('/html/body/div[1]/div[26]/form[3]/div/div/div/div[1]/div/div[2]/p').text
+            infos['auteur_mail'] = driver.find_element_by_xpath('/html/body/div[1]/div[26]/form[3]/div/div/div/div[1]/div/div[6]/p[7]/a').text
+            infos['abstract'] = driver.find_element_by_xpath('/html/body/div[1]/div[26]/form[3]/div/div/div/div[1]/div/div[4]/p').text
+            infos['keywords'] = driver.find_element_by_xpath('/html/body/div[1]/div[26]/form[3]/div/div/div/div[1]/div/div[5]/p[1]').text
+            infos['cited'] = driver.find_element_by_xpath('/html/body/div[1]/div[26]/form[3]/div/div/div/div[2]/div[1]/div/div[6]/a/span').text
+            infos['organization'] = 'Sultan Moulay Slimane University of Beni Mellal'
+            data.append(infos)
+            driver.find_element_by_xpath('/html/body/div[1]/div[26]/div/form/span/a[2]').click()
+        except Exception as e:
+            driver.find_element_by_xpath('/html/body/div[1]/div[26]/div/form/span/a[2]').click()
+            pass
+    print(data)
     return 1
 
 #get google scholar data
