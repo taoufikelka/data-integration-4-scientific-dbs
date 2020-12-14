@@ -28,7 +28,7 @@ def web_of_science(name_of_school):
     password.send_keys("@0000")
     button = driver.find_element_by_xpath("/html/body/div[1]/form/input")
     button.submit()
-    #we should to wait for the page ( slow internet :'( )
+    #we should wait for the page to load ( slow internet :'( )
     time.sleep(60)
     #entred to web_of_science
     main_selector = driver.find_element_by_xpath('//*[@id="select2-select1-container"]').click()
